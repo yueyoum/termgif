@@ -6,7 +6,9 @@
 #include <sys/time.h>
 #include <sys/select.h>
 
+#include "get_target_window.h"
 #include "wjpeg.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +22,8 @@ int main(int argc, char *argv[])
     XWindowAttributes attr;
 
     XGetInputFocus(d, &active, &revert);
+    /* active = current_window(d); */
+    active = target_window(d);
     XGetWindowAttributes(d, active, &attr);
 
     int width = attr.width;
@@ -34,7 +38,7 @@ int main(int argc, char *argv[])
     XImage *image = XGetImage(d, active, 0, 0, width, height, AllPlanes, ZPixmap);
     init_wjpeg(image->width, image->height);
 
-    for(i = 0; i<10; i++)
+    for(i = 0; i<20; i++)
     {
         sprintf(name, "test_%02d.jpg", i);
         printf("%s\n", name);
